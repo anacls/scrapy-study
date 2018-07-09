@@ -15,7 +15,8 @@ class TrainsSituation(scrapy.Spider):
         lines = response.xpath('//span[@class="nome_linha"]')
         
         for line in lines:
-            name = line.xpath('./text()').extract_first(default="")
-            situation = line.xpath('./following-sibling::span/text()').extract_first(default="")
-            print (name + ': ' + situation)
-        
+            yield{
+                'name' : line.xpath('./text()').extract_first(default=""),
+                'situation': line.xpath('./following-sibling::span/text()').extract_first(default="")
+            }
+            
