@@ -1,22 +1,20 @@
 import scrapy
+from scrapy.spiders import Spider
+from scrapy.loader import ItemLoader
+from scrapy_study.items import LineItem
 
 
-class TrainsSituation(scrapy.Spider):
-    name = "trains_situation"
-
-    def start_requests(self):
-        urls = [
-            'http://www.cptm.sp.gov.br/Atendimento/',
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+class TrainsSituationSpider(Spider):
+    name = 'trains_situation'
+    start_urls = [
+        "http://www.cptm.sp.gov.br/Atendimento/"
+    ]
 
     def parse(self, response):
         lines = response.xpath('//span[@class="nome_linha"]')
-        
         for line in lines:
-            yield{
-                'name' : line.xpath('./text()').extract_first(default=""),
-                'situation': line.xpath('./following-sibling::span/text()').extract_first(default="")
-            }
-            
+            l = ItemLoader(item=LineItem(), selector=line)
+            l.add_xpath('name', './text()')
+            l.add_xpath('situation', './following-sibling::span/text()')
+            l.add_xpath('description', './following-sibling::span/@data-original-title')
+            yield l.load_item()
