@@ -8,7 +8,7 @@ class TripAdvisor(Spider):
     ]
 
     def parse(self, response):
-        restaurante_links = response.xpath('//div[@id="EATERY_LIST_CONTENTS"]//div[@class="title"]//a')
+        restaurante_links = response.xpath('//div[@id="EATERY_LIST_CONTENTS"]//div[@class="wQjYiB7z"]/span/a')
 
         for restaurante_link in restaurante_links:
             url = restaurante_link.xpath('./@href').extract_first()
