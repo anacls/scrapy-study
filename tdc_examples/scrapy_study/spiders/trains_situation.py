@@ -7,7 +7,7 @@ from scrapy_study.items import LineItem
 class TrainsSituationSpider(Spider):
     name = 'trains_situation'
     start_urls = [
-        "http://www.cptm.sp.gov.br/Atendimento/"
+        "http://www.cptm.sp.gov.br/Pages/Home.aspx"
     ]
 
     def parse(self, response):
